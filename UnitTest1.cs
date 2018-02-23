@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Text;
@@ -22,9 +22,6 @@ namespace UnitTestProject1
     [TestClass]
     public class UnitTest1
     {
-        IWebDriver driver = new ChromeDriver();
-        public IJavaScriptExecutor executor;
-
         public string foundNum(string str)
         {//found num in string
             str = Regex.Match(str, @"\d+").Value; 
@@ -54,36 +51,48 @@ namespace UnitTestProject1
         [TestMethod]
         public void TestMethod1()
         {
-            //TODO: automation that over all elements in web site and generite the base of selenium script
+            //relese 2
+            //TODO:Q&A:IWebElement aaaaa = driver.FindElementByID("");
+
+            //relese 3
+            //TODO: class for function
+            //TODO: FUNCTION: log repport
+            //TODO: sort TEST(calss and function) negativ and possitive, create/upgreat/delete user
+            //TODO: FUNCTION: check the last activ and action is pass sucsseful
+            //TODO: FUNCTION: Found one word in content element
+            //TODO: FUNCTION: press all option and after that check if is electet by radio-butten/check-list/combo-box
             //TODO: go to new window and new tab
             //TODO: before/after test
+
+            //relese 4
+            //TODO: FUNCTION: that try all attribiutes for found element in JS and run by selenium 
+            //TODO: FUNCTION: set id from js-> myPara.setAttribute("id", "id_you_like");
+            //TODO: automation that over all elements in web site and generite the base of selenium script
             //TODO: CI TOOLS
 
             #region open
-
-
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            IWebDriver driver = new ChromeDriver();
+            IJavaScriptExecutor executor = (IJavaScriptExecutor)driver;
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(50));
             Actions action = new Actions(driver);
-            executor = (IJavaScriptExecutor)driver;
-            driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(5);
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-            driver.Manage().Timeouts().AsynchronousJavaScript = TimeSpan.FromSeconds(5);
+            driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(50);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(50);
+            driver.Manage().Timeouts().AsynchronousJavaScript = TimeSpan.FromSeconds(50);
             driver.Manage().Window.Maximize();
             driver.Navigate().GoToUrl(Elements.baseURL);
 
-            IJavaScriptExecutor aa = (IJavaScriptExecutor)driver;
             //IWebElement item = driver.FindElement(By.Id("hhhh"));
-            //aa.ExecuteScript("argument[0].scrollIntoView(true);", item);
+            //executor.ExecuteScript("argument[0].scrollIntoView(true);", item);
+            //action.MoveToElement(item).Perform();
             //action.DoubleClick(item).Perform();
-            //IWebElement fram = driver.FindElement(By.Id("hhhh"));
-            //action.DragAndDropToOffset(fram, 200, 200).Perform();
+            //action.DragAndDropToOffset(item, 200, 200).Perform();
 
+            //var element = wait.Until(ExpectedConditions.ElementIsVisible(By.Id("????")));
             //elementToSendTo.SendKeys(Keys.Control + "s"); // press any key of keyboards
 
             #endregion
 
             #region login
-            //TODO: Function TEST negativ and possitive
 
             IWebElement userNme = driver.FindElement(By.Name(Elements.Txt_UserName_Name));
             IWebElement password = driver.FindElement(By.Name(Elements.Txt_Password_Name));
@@ -93,66 +102,51 @@ namespace UnitTestProject1
             password.SendKeys("123");
             string untx = userNme.Text;
             string ptx = password.Text;
-                //TODO:input to FUNCTION check the value is writed
-            Assert.AreEqual("123", untx);
-            Assert.AreEqual("123", ptx);
-
+            //TODO: Assert.AreEqual("123", untx);
+            //TODO: Assert.AreEqual("123", ptx);
             button.Click();
-            
-           
-
-            Thread.Sleep(500);
-            Thread.Sleep(1000);
+ 
+            Thread.Sleep(1500);
             String currentURL = driver.Url;
-            //Assert.AreEqual("http://executeautomation.com/demosite/index.html?UserName=123&Password=123&Login=Login", currentURL);
+            Assert.AreEqual("http://executeautomation.com/demosite/index.html?UserName=123&Password=123&Login=Login", currentURL);
 
             #endregion
 
             #region user form
 
-            //TODO: Function AND class
-            //TODO: FUNCTION log repport
-            string StringINhomePage = "This is a demo website, which act as a mock site for trying out different automation tools";
+            string StringINhomePage = "Execute Automation Selenium Test Site";
             IWebElement elementForText = driver.FindElement(By.TagName("h1"));
             string textElement = elementForText.Text;
             Assert.AreEqual(StringINhomePage, textElement);
-            //TODO: Found one word in content element
 
-            //TODO: function that try all attribiutes for found element in JS and run by selenium
             IWebElement Title = driver.FindElement(By.Id("TitleId"));
             IWebElement Initial = driver.FindElement(By.Id("Initial")); //text
             IWebElement FirstName = driver.FindElement(By.Id("FirstName")); //text*
             IWebElement MiddleName = driver.FindElement(By.Id("MiddleName")); //text
-            IWebElement GenderMale = driver.FindElement(By.Name("Male")); // radio button
+            IWebElement GenderMale = driver.FindElement(By.Name("Female")); // radio button
             IWebElement LanguagesKnownENGLISH = driver.FindElement(By.Name("english")); //check Button
             IWebElement buttonSAVE = driver.FindElement(By.Name("Save"));
 
             SelectElement country = new SelectElement(Title);
             country.SelectByText("Mr.");
             country.SelectByValue("2");
-            country.SelectByIndex(0); // it is works?
+            country.SelectByIndex(0);
 
             Initial.SendKeys("blablabal");
             FirstName.SendKeys("blablabal");
-            MiddleName.SendKeys("blablabal");//TODO:function for negativ test
-            GenderMale.Click(); // TODO: FUNCTION press all option and after that check if is electet 
-            LanguagesKnownENGLISH.Click(); // TODO: FUNCTION press all option and after that check if is electet
+            MiddleName.SendKeys("blablabal");   
+            GenderMale.Click();                 
+            LanguagesKnownENGLISH.Click();      
             buttonSAVE.Click();
-            //TODO: check if is realy save 
-            //TODO: upgreat the user
-            //TODO: delete the user
-
 
             #endregion
-            //TODO: action for drug and drop
-            // actions for MOUSEOVER
-            var element = wait.Until(ExpectedConditions.ElementIsVisible(By.Id("????")));
-            action.MoveToElement(element).Perform();
-            // TODO: get alert window and other pop window
+
+            // TODO:NOW: action for drug and drop
+            // TODO:NOW: actions for MOUSEOVER
+            // TODO:NOW: get alert window and other pop window
             Thread.Sleep(555);
             driver.Close();
 
-            //TODO: set id from js-> myPara.setAttribute("id", "id_you_like");
         }
     }
 }
