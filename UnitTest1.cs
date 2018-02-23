@@ -70,6 +70,8 @@ namespace UnitTestProject1
             //TODO: automation that over all elements in web site and generite the base of selenium script
             //TODO: CI TOOLS
 
+            string baseURL = "http://executeautomation.com/demosite/Login.html";
+            
             #region open
             IWebDriver driver = new ChromeDriver();
             IJavaScriptExecutor executor = (IJavaScriptExecutor)driver;
@@ -79,7 +81,7 @@ namespace UnitTestProject1
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(50);
             driver.Manage().Timeouts().AsynchronousJavaScript = TimeSpan.FromSeconds(50);
             driver.Manage().Window.Maximize();
-            driver.Navigate().GoToUrl(Elements.baseURL);
+            driver.Navigate().GoToUrl(baseURL);
 
             //IWebElement item = driver.FindElement(By.Id("hhhh"));
             //executor.ExecuteScript("argument[0].scrollIntoView(true);", item);
