@@ -1,20 +1,19 @@
 using System;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Text;
-using System.Linq;
+//using System.Threading.Tasks;
+//using System.Text;
+//using System.Linq;
 using System.Text.RegularExpressions;
 using System.IO;
-using System.Diagnostics;
-using System.Collections.Generic;
+//using System.Diagnostics;
+//using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support;
+//using OpenQA.Selenium.Support;
 using OpenQA.Selenium.Support.UI;
-using UnitTestProject1;
-using tests;
+
 
 
 namespace UnitTestProject1
@@ -26,7 +25,7 @@ namespace UnitTestProject1
 
         public string foundNum(string str)
         {//found num in string
-            str = Regex.Match(str, @"\d+").Value; 
+            str = Regex.Match(str, @"\d+").Value;
             return (str);
         }
 
@@ -39,7 +38,7 @@ namespace UnitTestProject1
 
         public static void CaptureXXX(IWebDriver driver, string screenShotName)
         {
-        
+
             Screenshot ss = ((ITakesScreenshot)driver).GetScreenshot();//Screenshot ss = ((ITakesScreenshot)webDriver).GetScreenshot();"
 
             //Use it as you want now
@@ -47,7 +46,7 @@ namespace UnitTestProject1
             byte[] screenshotAsByteArray = ss.AsByteArray;
             ss.SaveAsFile("filename", ScreenshotImageFormat.Png); //use any of the built in image formating
             ss.ToString();//same as string screenshot = ss.AsBase64EncodedString;
- 
+
         }
 
         #endregion
@@ -57,11 +56,12 @@ namespace UnitTestProject1
         {
             #region todo br relese
             //relese 2
+            //TODO: Upload File
+            //TODO: FUNCTION: log repport
             //TODO:Q&A:IWebElement aaaaa = driver.FindElementByID("");
 
             //relese 3
             //TODO: class for function
-            //TODO: FUNCTION: log repport
             //TODO: sort TEST(calss and function) negativ and possitive, create/upgreat/delete user
             //TODO: FUNCTION: check the last activ and action is pass sucsseful
             //TODO: FUNCTION: Found one word in content element
@@ -86,7 +86,7 @@ namespace UnitTestProject1
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(50);
             driver.Manage().Timeouts().AsynchronousJavaScript = TimeSpan.FromSeconds(50);
             driver.Manage().Window.Maximize();
-            driver.Navigate().GoToUrl(Elements.baseURL);
+            driver.Navigate().GoToUrl("http://executeautomation.com/demosite/Login.html");
 
             //IWebElement item = driver.FindElement(By.Id("hhhh"));
             //action.DoubleClick(item).Perform();
@@ -108,7 +108,7 @@ namespace UnitTestProject1
             //TODO: Assert.AreEqual("123", untx);
             //TODO: Assert.AreEqual("123", ptx);
             button.Click();
- 
+
             Thread.Sleep(1500);
             String currentURL = driver.Url;
             Assert.AreEqual("http://executeautomation.com/demosite/index.html?UserName=123&Password=123&Login=Login", currentURL);
@@ -137,17 +137,49 @@ namespace UnitTestProject1
 
             Initial.SendKeys("blablabal");
             FirstName.SendKeys("blablabal");
-            MiddleName.SendKeys("blablabal");   
-            GenderMale.Click();                 
-            LanguagesKnownENGLISH.Click();      
+            MiddleName.SendKeys("blablabal");
+            GenderMale.Click();
+            LanguagesKnownENGLISH.Click();
             buttonSAVE.Click();
 
             #endregion
 
             #region actions
 
-            // TODO:NOW: get alert window and other pop window
+            #region alert
+            //get alert window and other pop window
+            IWebElement jsAlertButton = driver.FindElement(By.CssSelector("[name = 'generate']"));
+            jsAlertButton.Click();
+            // Get a handle to the open alert, prompt or confirmation
+            IAlert alert = driver.SwitchTo().Alert();
+            // Get the text of the alert or prompt
+            var nnn = alert.Text;
+            // And acknowledge the alert (equivalent to clicking "OK")
+            alert.Accept();
+            driver.SwitchTo().Alert().Accept();
+            #endregion
 
+            #region popup
+            //TODO: get popup window
+            // Get the current window handle so you can switch back later.
+            string currentHandle = driver.CurrentWindowHandle;
+            // Find the element that triggers the popup when clicked on.
+            IWebElement yypopup = driver.FindElement(By.CssSelector("[href='popup.html']"));
+
+            //Laungh the pop-up window
+            PopupWindowFinder finder = new PopupWindowFinder(driver);
+            string popupWindowHandle = finder.Click(yypopup);
+
+            driver.SwitchTo().Window(popupWindowHandle);
+            IWebElement element = driver.FindElement(By.CssSelector("[name='Female']"));
+            element.Click();
+
+            // Do whatever you need to on the popup browser, then...
+            driver.Close();
+            driver.SwitchTo().Window(currentHandle);
+            #endregion
+
+            #region mouveMouse
             IWebElement moveOverByScrol = driver.FindElement(By.Id("Automation Tools"));
             IWebElement OverByMeSecond = driver.FindElement(By.Id("Selenium"));
             //IWebElement clickMeOne = driver.FindElement(By.Id(""));
@@ -157,29 +189,35 @@ namespace UnitTestProject1
             //Thread.Sleep(500);
             var clickMeOne = wait.Until(ExpectedConditions.ElementIsVisible(By.Id("Selenium IDE")));
             clickMeOne.Click();
+            #endregion
 
-            
+            #region scrol bar
             IWebElement scroll = driver.FindElement(By.ClassName("scroll"));
             IWebElement Accept = driver.FindElement(By.CssSelector("input[value='accept']"));
-            
+
             executor.ExecuteScript("arguments[0].style='overflow: inherit;'", scroll);
             Thread.Sleep(500);
             executor.ExecuteScript("arguments[0].scrollIntoView(true);", Accept);
             Thread.Sleep(500);
             Accept.Click();
             Thread.Sleep(500);
-            Assert.IsTrue(Accept.Selected,"not selected after scrol bar");
+            Assert.IsTrue(Accept.Selected, "not selected after scrol bar");
 
-
-            //drug and drop
-            //< a href = "Dragging.html" >< span > Drag and Drop</ span ></ a >
+            //return to Menu bar
             executor.ExecuteScript("scroll(0, -250);");
+            #endregion
+
+            #region druge and drope
             IWebElement DragandDrop = driver.FindElement(By.CssSelector("a[href='Dragging.html']"));
             DragandDrop.Click();
+            //drug and drop
             IWebElement item1 = driver.FindElement(By.Id("item1"));
             IWebElement item4 = driver.FindElement(By.Id("item4"));
-            action.DragAndDrop(item1, item4).Perform(); 
-            //action.ClickAndHold(item1).MoveToElement(item4).Release().Build().Perform();
+            Actions ac = new Actions(driver);
+            ac.DragAndDrop(item1, item4);
+            ac.Build().Perform();
+            #endregion
+
             #endregion
 
             #region close
