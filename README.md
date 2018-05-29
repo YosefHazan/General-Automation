@@ -3,11 +3,11 @@ quick selenium C# projeckt
 
   * open at maximum window.
   * close browser.
-  * all input that exist: \n 
+  * all input that exist: 
                           write, 
                           click, 
                           select.
-  * all action: 
+  * all action:
                           alert,
                           pop-up,
                           Mouse-Over, 
