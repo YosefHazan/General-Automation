@@ -3,7 +3,7 @@ quick selenium C# projeckt
 
   * open at maximum window.
   * close browser.
-  * all input that exist: 
+  * all input that exist: \n 
                           write, 
                           click, 
                           select.
