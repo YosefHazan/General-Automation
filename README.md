@@ -17,3 +17,7 @@ quick selenium C# projeckt
                           Write to file,
                           Found Number in string,
                           (screenShot - need DBUG).
+                          
+TODO next :  
+                          Upload File,
+                          Repport Web log.
