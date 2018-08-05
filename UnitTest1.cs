@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Threading;
 //using System.Threading.Tasks;
 //using System.Text;
@@ -48,6 +49,47 @@ namespace UnitTestProject1
             ss.ToString();//same as string screenshot = ss.AsBase64EncodedString;
 
         }
+
+        #region Report
+
+        public static string ResultFile()
+        {
+            // report
+            //Directory.CreateDirectory("C:\\yosef\\yyTestCS\\Reports\\ReportTest");
+            string sourceFile = @"C:\yosef\yyTestCS\Reports\ReportTest\ReportTest.html";
+            string TimeForDirec = (DateTime.Now.ToString()).Replace("/", ".").Replace(":", "-");
+            string newfile = "C:\\yosef\\yyTestCS\\Reports\\" + TimeForDirec + ".html";
+            File.Copy(sourceFile, newfile, true);
+
+            return newfile;
+        }
+ 
+        public static void ClouseResult(string filename)
+        {
+            File.AppendAllText(filename, "</table></body></html>");
+        }
+
+        public static void addlineResult(string filename, string jjjj)
+        {
+            File.AppendAllText(filename, jjjj);
+        }
+
+        public static void ReadingText(string filename)
+        {
+          FileStream fs = new FileStream(filename,
+                                         FileMode.Open,
+                                         FileAccess.Read);
+ 
+          StreamReader reader = new StreamReader(fs);
+ 
+          string str = reader.ReadToEnd();
+          Console.WriteLine(str);
+ 
+          reader.Close();
+          fs.Close();
+        }
+
+        #endregion
 
         #endregion
 
@@ -160,13 +202,12 @@ namespace UnitTestProject1
             #endregion
 
             #region popup
-            //TODO: get popup window
             // Get the current window handle so you can switch back later.
             string currentHandle = driver.CurrentWindowHandle;
             // Find the element that triggers the popup when clicked on.
             IWebElement yypopup = driver.FindElement(By.CssSelector("[href='popup.html']"));
 
-            //Laungh the pop-up window
+            //Launch the pop-up window
             PopupWindowFinder finder = new PopupWindowFinder(driver);
             string popupWindowHandle = finder.Click(yypopup);
 
@@ -226,6 +267,16 @@ namespace UnitTestProject1
             driver.Close();
 
             #endregion
+
+            #region reportfromMain
+
+            string newfile = ResultFile();
+            addlineResult(newfile, "<tr><td width='10 % '>" + "sometext1" + "</td>" + "<td width='10 % '>" + "sometext2" + "</td>" + "<td width='80 % '>" + "sometext3" + "</td></tr>");
+            ClouseResult(newfile);
+            //ReadingText(newfile);
+
+            #endregion
+
         }
     }
 }
